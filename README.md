@@ -5,6 +5,10 @@ Sample code and configurations to support a webinar showing how to optimize disp
 
 **Sample code for the following webinar on Thursday, February 21st, 2013.**
 
+Presentation Slides
+-----------
+Download [here](https://sendnow.acrobat.com/?i=l8sTGEVvumaY27bybpg1Fg)
+
 Join Adobe experts for an exclusive Adobe CQ Webinar
 ------------------------------------
  
