@@ -1,0 +1,219 @@
+# Each farm configures a set of load balanced renders (i.e. remote servers)
+/farms
+  {
+  # First farm entry
+  /website 
+    {  
+    # Request headers that should be forwarded to the remote server.
+    /clientheaders
+      {
+      # Forward all request headers that are end-to-end. If you want
+      # to forward a specific set of headers, you'll have to list
+      # them here.
+      "*"
+      }
+      
+    # Hostname globbing for farm selection (virtual domain addressing)
+    /virtualhosts
+      {
+      # Entries will be compared against the "Host" request header
+      # and an optional request URL prefix.
+      #
+      # Examples:
+      #
+      #   www.company.com
+      #   intranet.*
+      #   myhost:8888/mysite
+      "*"
+      }
+      
+    # The load will be balanced among these render instances
+    /renders
+      {
+      /rend01
+        {
+        # Hostname or IP of the render
+        /hostname "127.0.0.1"
+        # Port of the render
+        /port "4503"
+        # Connect timeout in milliseconds, 0 to wait indefinitely
+        # /timeout "0"
+        }
+      #/rend02
+       # {
+        # Hostname or IP of the render
+        #/hostname "127.0.0.1"
+        # Port of the render
+        #/port "4505"
+        # Connect timeout in milliseconds, 0 to wait indefinitely
+        # /timeout "0"
+        #}
+
+      }
+      
+    # The filter section defines the requests that should be handled by the dispatcher.
+    # The globs will be compared against the request line, e.g. "GET /index.html HTTP/1.1".
+    /filter
+      {
+      # Deny everything first and then allow specific entries
+      /0001 { /type "deny"  /glob "*" }
+        
+      # Open consoles
+#     /0011 { /type "allow" /glob "* /admin/*"  }  # allow servlet engine admin
+#     /0012 { /type "allow" /glob "* /crx/*"    }  # allow content repository
+#     /0013 { /type "allow" /glob "* /system/*" }  # allow OSGi console
+        
+      # Allow non-public content directories
+#     /0021 { /type "allow" /glob "* /apps/*"   }  # allow apps access
+#     /0022 { /type "allow" /glob "* /bin/*"    }
+      /0023 { /type "allow" /glob "* /content*" }  # disable this rule to allow mapped content only
+      
+#     /0024 { /type "allow" /glob "* /libs/*"   }
+#     /0025 { /type "deny"  /glob "* /libs/shindig/proxy*" } # if you enable /libs close access to proxy
+
+#     /0026 { /type "allow" /glob "* /home/*"   }
+#     /0027 { /type "allow" /glob "* /tmp/*"    }
+#     /0028 { /type "allow" /glob "* /var/*"    }
+
+      # Enable specific mime types in non-public content directories 
+      /0041 { /type "allow" /glob "* *.css *"   }  # enable css
+      /0042 { /type "allow" /glob "* *.gif *"   }  # enable gifs
+      /0043 { /type "allow" /glob "* *.ico *"   }  # enable icos
+      /0044 { /type "allow" /glob "* *.js *"    }  # enable javascript
+      /0045 { /type "allow" /glob "* *.png *"   }  # enable png
+      /0046 { /type "allow" /glob "* *.swf *"   }  # enable flash
+
+      # Enable features 
+      /0061 { /type "allow" /glob "POST /content/[.]*.form.html" }  # allow POSTs to form selectors under content
+      /0062 { /type "allow" /glob "* /libs/cq/personalization/*"  }  # enable personalization
+
+      # Deny content grabbing
+      /0081 { /type "deny"  /glob "GET *.infinity.json*" }
+      /0082 { /type "deny"  /glob "GET *.tidy.json*"     }
+      /0083 { /type "deny"  /glob "GET *.sysview.xml*"   }
+      /0084 { /type "deny"  /glob "GET *.docview.json*"  }
+      /0085 { /type "deny"  /glob "GET *.docview.xml*"  }
+      
+      /0086 { /type "deny"  /glob "GET *.*[0-9].json*" }
+#     /0087 { /type "allow" /glob "GET *.1.json*" }          # allow one-level json requests
+
+      # Deny query
+      /0090 { /type "deny"  /glob "* *.query.json*" }
+      }
+
+    # The cache section regulates what responses will be cached and where.
+    /cache
+      {
+      # The docroot must be equal to the document root of the webserver. The
+      # dispatcher will store files relative to this directory and subsequent
+      # requests may be "declined" by the dispatcher, allowing the webserver
+      # to deliver them just like static files.
+      /docroot "/var/www/html"
+
+      # Sets the level upto which files named ".stat" will be created in the 
+      # document root of the webserver. When an activation request for some 
+      # page is received, only files within the same subtree are affected 
+      # by the invalidation.
+      /statfileslevel "0"
+      
+      # Flag indicating whether to cache responses to requests that contain
+      # authorization information.
+      #/allowAuthorized "0"
+      
+      # Flag indicating whether the dispatcher should serve stale content if
+      # no remote server is available.
+      /serveStaleOnError "1"
+      
+      # The rules section defines what responses should be cached based on
+      # the requested URL. Please note that only the following requests can
+      # lead to cacheable responses:
+      #
+      # - HTTP method is GET
+      # - URL has an extension
+      # - Request has no query string
+      # - Request has no "Authorization" header (unless allowAuthorized is 1)
+      /rules
+        {
+        /0000
+          {
+          # the globbing pattern to be compared against the url
+          # example: *             -> everything
+          #        : /foo/bar.*    -> only the /foo/bar documents
+          #        : /foo/bar/*    -> all pages below /foo/bar
+          #        : /foo/bar[./]* -> all pages below and /foo/bar itself
+          #        : *.html        -> all .html files
+          /glob "*"
+          /type "allow"
+          }
+        }
+        
+      # The invalidate section defines the pages that are "invalidated" after
+      # any activation. Please note that the activated page itself and all 
+      # related documents are flushed on an modification. For example: if the 
+      # page /foo/bar is activated, all /foo/bar.* files are removed from the
+      # cache.
+      /invalidate
+        {
+        /0000
+          {
+          /glob "*"
+          /type "deny"
+          }
+        /0001
+          {
+          # Consider all HTML files stale after an activation.
+          /glob "*.html"
+          /type "allow"
+          }
+        }
+
+      # The allowedClients section restricts the client IP addresses that are
+      # allowed to issue activation requests.
+      /allowedClients
+        {
+        # Uncomment the following to restrict activation requests to originate
+        # from "localhost" only.
+        #
+        #/0000
+        #  {
+        #  /glob "*"
+        #  /type "deny"
+        #  }
+        #/0001
+        #  {
+        #  /glob "127.0.0.1"
+        #  /type "allow"
+        #  }
+        }
+        
+      # The ignoreUrlParams section contains query string parameter names that
+      # should be ignored when determining whether some request's output can be
+      # cached or delivered from cache.
+      #
+      # In this example configuration, the "q" parameter will be ignored. 
+      /ignoreUrlParams
+        {
+        /0001 { /glob "*" /type "allow" }
+        /0002 { /glob "q" /type "deny" }
+        }
+      
+      }
+      
+    # The statistics sections dictates how the load should be balanced among the
+    # renders according to the media-type. 
+    /statistics
+      {
+      /categories
+        {
+        /html
+          {
+          /glob "*.html"
+          }
+        /others
+          {
+          /glob "*"
+          }
+        }
+      }
+    }
+  }
