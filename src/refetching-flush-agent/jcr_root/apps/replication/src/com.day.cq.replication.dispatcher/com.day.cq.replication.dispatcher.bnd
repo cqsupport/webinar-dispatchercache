@@ -1,0 +1,8 @@
+Export-Package: *
+Import-Package: *
+Private-Package: *
+# Include-Resource: 
+Bundle-Name: Day Communique 5 Dispatcher FLush Content Builder
+Bundle-Description: Contains the Dispatcher Flush Content Builder
+Bundle-SymbolicName: com.day.cq.replication.dispatcher
+Bundle-Version: 1.0.0

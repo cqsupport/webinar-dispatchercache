@@ -1,0 +1,16 @@
+<'cq'='http://www.day.com/jcr/cq/1.0'>
+<'rep'='internal'>
+
+[cq:ReplicationStatus]
+  mixin
+  - cq:lastReplicatedBy (string) ignore
+  - cq:lastPublished (date) ignore
+  - cq:lastPublishedBy (string) ignore
+  - cq:lastReplicationStatus (string) ignore
+  - cq:lastReplicationAction (string) ignore
+  - cq:lastReplicated (date) ignore
+
+[rep:RepoAccessControllable]
+  mixin
+  + rep:repoPolicy (rep:Policy) protected ignore
+

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workspaceFilter version="1.0">
+    <filter root="/apps/replication/src/com.day.cq.replication.dispatcher"/>
+    <filter root="/apps/replication/install/com.day.cq.replication.dispatcher.jar"/>
+</workspaceFilter>

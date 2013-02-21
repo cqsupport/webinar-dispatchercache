@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:vlt="http://www.day.com/jcr/vault/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:created="{Date}2013-02-21T04:32:11.700-04:00"
+    jcr:createdBy="admin"
+    jcr:description="Sample implementation of a re-fetching dispatcher flush agent.&#xd;&#xa;Agent configuration must be set with the following when using this:&#xd;&#xa;* General => Serialization Type => Re-fetch Dispatcher Flush&#xd;&#xa;* Extended => HTTP Method => POST"
+    jcr:lastModified="{Date}2013-02-21T04:32:11.700-04:00"
+    jcr:lastModifiedBy="admin"
+    jcr:primaryType="vlt:PackageDefinition"
+    sling:resourceType="cq/packaging/components/pack/definition"
+    buildCount="8"
+    builtWith="Adobe CQ5-5.5.0"
+    cqVersion="5.3"
+    fixedBugs=""
+    group="adobe/samplecode"
+    lastUnwrapped="{Date}2013-02-21T04:32:11.700-04:00"
+    lastUnwrappedBy="admin"
+    lastWrapped="{Date}2013-02-21T04:32:11.700-04:00"
+    lastWrappedBy="admin"
+    name="dispatcher-flush-refetch-samplecode"
+    path="/etc/packages/day/cq530/feature/cq-5.3.0-featurepack-29554"
+    providerLink=""
+    providerName=""
+    providerUrl=""
+    testedWith=""
+    version="1.0">
+    <thumbnail
+        jcr:lastModified="{Date}2010-06-04T17:08:36.596+02:00"
+        jcr:lastModifiedBy="admin"
+        jcr:primaryType="nt:unstructured"
+        rotate="0">
+        <file/>
+    </thumbnail>
+    <thumbnail.png/>
+    <filter jcr:primaryType="nt:unstructured">
+        <f0
+            jcr:primaryType="nt:unstructured"
+            mode="replace"
+            root="/apps/replication/src/com.day.cq.replication.dispatcher"
+            rules="[]"/>
+        <f1
+            jcr:primaryType="nt:unstructured"
+            mode="replace"
+            root="/apps/replication/install/com.day.cq.replication.dispatcher.jar"
+            rules="[]"/>
+    </filter>
+    <screenshots jcr:primaryType="nt:unstructured"/>
+</jcr:root>
