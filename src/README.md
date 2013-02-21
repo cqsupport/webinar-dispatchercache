@@ -11,6 +11,6 @@ Sample Code
 * refetching-flush-agent - sample dispatcher flush serialization type that causes the dispatcher to re-fetch certain files instead of deleting them.
   * This code was written originally by Dominique Pfister from Day/Adobe.
   * This implementation works like this:
-    * If the flush path has no file extension then {flush-path}.html will be re-fetched.
-    * Otherwise the unaltered {flush-path} will be re-fetched (this handles the case of static files and dam:Assets)
+     * If the flush path has no file extension then {flush-path}.html will be re-fetched.
+     * Otherwise the unaltered {flush-path} will be re-fetched (this handles the case of static files and dam:Assets)
   * Depending on how you serve content in your site you may want to modify this to handle re-fetching differently.
