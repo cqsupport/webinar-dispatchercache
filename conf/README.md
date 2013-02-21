@@ -1,4 +1,4 @@
-h1. Configurations
+.h1 Configurations
 -----
 
 * httpd.conf is a simplified Apache httpd server configuration for Redhat 5.  It can be adapted with slight modifications work in almost any Linux Apache 2.x installation.
