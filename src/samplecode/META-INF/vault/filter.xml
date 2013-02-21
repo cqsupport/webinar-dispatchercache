@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <workspaceFilter version="1.0">
     <filter root="/apps/samplecode/components/dispatcher"/>
+    <filter root="/apps/samplecode/src/com.adobe.people.jedelson.cq-urlfilter"/>
+    <filter root="/apps/samplecode/install/com.adobe.people.jedelson.cq-urlfilter.jar"/>
+    <filter root="/apps/sling/servlet/errorhandler/404.jsp"/>
+    <filter root="/apps/sling/servlet/errorhandler/default.jsp"/>
 </workspaceFilter>

@@ -1,0 +1,8 @@
+Export-Package: *
+Import-Package: *
+Private-Package: com.adobe.people.jedelson
+# Include-Resource:
+Bundle-Name: CQ URL Filter
+Bundle-Description: Filter which limits access to selectors/extensions based on component configuration
+Bundle-SymbolicName: com.adobe.people.jedelson.cq-urlfilter
+Bundle-Version: 1.0.0-SNAPSHOT
