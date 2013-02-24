@@ -3,16 +3,14 @@ Optimizing the CQ Dispatcher Cache
 
 Sample code and configurations to support a webinar showing how to optimize dispatcher caching with Adobe CQ.
 
-**Sample code for the following webinar on Thursday, February 21st, 2013.**
-
-Presentation Slides
------------
-Download [here](https://sendnow.acrobat.com/?i=l8sTGEVvumaY27bybpg1Fg)
+**Sample code for the following webinar which was on Thursday, February 21st, 2013.**
 
 Join Adobe experts for an exclusive Adobe CQ Webinar
 ------------------------------------
  
-To maximize your CQ experience, it is important that you optimize the response time. Our experts will provide you a hands-on guidance and real life examples in a 45 minutes webinar.  **[Register Now]**
+Webinar Recording: [http://my.adobeconnect.com/p7th2gf8k43/]
+
+To maximize your CQ experience, it is important that you optimize the response time. Our experts will provide you a hands-on guidance and real life examples in a 45 minutes webinar.
 
 Join Adobe CQ experts Andrew Khoury and Henry Saginor, to learn about:-
 
@@ -32,15 +30,4 @@ This session is designed to educate -
 * CQ Administrators
 * CQ Web Ops Engineers
 * CQ Dev Ops Engineers
-
-### When and Where?
-
-* Thursday, February 21st, 2013 
-* 8:00 AM PT (4:00 PM BST, 5:00 PM CST)
-* Duration: 60 minutes
-
-**[Register Now]**
-
-
-[Register Now]: http://app.response.adobesystemsinc.com/e/er?s=1391&lid=6293&elq=71157a507acc4e7c8c1aaf08d74220e7
 
