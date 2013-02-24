@@ -28,7 +28,9 @@
     org.apache.sling.api.scripting.SlingBindings,
     org.apache.sling.engine.auth.Authenticator,
     org.apache.sling.engine.auth.NoAuthenticationHandlerException,
-    com.day.cq.wcm.api.WCMMode" %><%!
+    com.day.cq.wcm.api.WCMMode,
+    org.apache.sling.runmode.RunMode,
+    org.apache.sling.api.scripting.SlingScriptHelper" %><%!
 
     private boolean isAnonymousUser(HttpServletRequest request) {
         return request.getAuthType() == null
@@ -43,14 +45,25 @@
                 || userAgent.indexOf("Opera") > -1);
     }
     
-%><%
+%><%@taglib prefix="sling" uri="http://sling.apache.org/taglibs/sling/1.0" %><%
+%><sling:defineObjects /><%
+//SlingBindings bindings = (SlingBindings) request.getAttribute("org.apache.sling.api.scripting.SlingBindings");
+//SlingScriptHelper sling = bindings.getSling();
 
+RunMode runmode = sling.getService(org.apache.sling.runmode.RunMode.class);
+    String[] runmodes = runmode.getCurrentRunModes();
+    boolean isPublish = false;
+    String [] expectedRunModes = {"publish"};
+    if(runmode.isActive(expectedRunModes)) {
+    isPublish = true;
+}
+
+if(!isPublish) {
     // decide whether to redirect to the (wcm) login page, or to send a plain 404
-    /*if (isAnonymousUser(request)
+    if (isAnonymousUser(request)
             && isBrowserRequest(request)) {
         
-        SlingBindings bindings = (SlingBindings) request.getAttribute("org.apache.sling.api.scripting.SlingBindings");
-        Authenticator auth = bindings.getSling().getService(Authenticator.class);
+        Authenticator auth = sling.getService(Authenticator.class);
         if (auth != null) {
             try {
                 auth.login(request, response);
@@ -64,7 +77,8 @@
             bindings.getLog().warn("Cannot login: Missing Authenticator service");
         }
         
-    }*/
+    }
+}
 
     // get here if authentication should not take place or if
     // no Authenticator service is available or if no
