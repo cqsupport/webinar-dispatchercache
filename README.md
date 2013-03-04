@@ -31,3 +31,9 @@ This session is designed to educate -
 * CQ Web Ops Engineers
 * CQ Dev Ops Engineers
 
+### Related Documentation
+* Dispatcher Documentation - http://dev.day.com/docs/en/cq/current/deploying/dispatcher.html
+* Configuring Dispatcher - http://dev.day.com/docs/en/cq/current/deploying/dispatcher/disp_config.html
+* Dispatcher Troubleshooting - http://helpx.adobe.com/adobe-cq/kb/troubleshooting-dispatcher-flushing-issues.html
+* How to Configure Dispatcher Flush from a Publish instance - http://dev.day.com/docs/en/cq/current/deploying/dispatcher/page_invalidate.html#Invalidating%20Dispatcher%20Cache%20from%20a%20Publishing%20Instance
+* How to flush DAM assets from a CQ5 Publish instance - http://helpx.adobe.com/cq/kb/HowToFlushAssetsPublish.html
