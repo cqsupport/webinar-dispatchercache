@@ -5,10 +5,14 @@ Sample code and configurations to support a webinar showing how to optimize disp
 
 **Sample code for the following webinar which was on Thursday, February 21st, 2013.**
 
+### Webinar Recording
+http://my.adobeconnect.com/p7th2gf8k43/
+
+### Presentation Slides
+View online here: http://www.slideshare.net/andrewmkhoury/aem-cq-dispatcher-caching-webinar-2013
+
 Join Adobe experts for an exclusive Adobe CQ Webinar
 ------------------------------------
- 
-Webinar Recording: [http://my.adobeconnect.com/p7th2gf8k43/]
 
 To maximize your CQ experience, it is important that you optimize the response time. Our experts will provide you a hands-on guidance and real life examples in a 45 minutes webinar.
 
