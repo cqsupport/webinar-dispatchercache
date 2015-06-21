@@ -1,0 +1,10 @@
+# VLT
+*.vlt
+# Eclipse
+*.settings
+*.project
+*.classpath
+*.dir
+*.svn
+target
+

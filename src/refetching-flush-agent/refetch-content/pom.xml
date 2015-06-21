@@ -1,0 +1,116 @@
+<!-- ADOBE CONFIDENTIAL ___________________ Copyright 2011 Adobe Systems 
+	Incorporated All Rights Reserved. NOTICE: All information contained herein 
+	is, and remains the property of Adobe Systems Incorporated and its suppliers, 
+	if any. The intellectual and technical concepts contained herein are proprietary 
+	to Adobe Systems Incorporated and its suppliers and are protected by trade 
+	secret or copyright law. Dissemination of this information or reproduction 
+	of this material is strictly forbidden unless prior written permission is 
+	obtained from Adobe Systems Incorporated. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- ====================================================================== -->
+	<!-- P A R E N T P R O J E C T D E S C R I P T I O N -->
+	<!-- ====================================================================== -->
+	<parent>
+		<groupId>com.adobe</groupId>
+		<artifactId>adobe</artifactId>
+		<version>6</version>
+		<relativePath />
+	</parent>
+
+	<groupId>com.adobe.cqsupport</groupId>
+	<artifactId>refetch-dispatcher-content</artifactId>
+	<version>1.2-SNAPSHOT</version>
+	<packaging>content-package</packaging>
+
+	<name>Refetch-dispatcher Content Package</name>
+	<description>Contains the Refetch Dispatcher Flush Content Builder bundle</description>
+
+	<!-- ====================================================================== -->
+	<!-- P R O P E R T I E S -->
+	<!-- ====================================================================== -->
+	<properties>
+		<quickstart.url>http://localhost:4502</quickstart.url>
+	</properties>
+
+	<!-- ====================================================================== -->
+	<!-- B U I L D D E F I N I T I O N -->
+	<!-- ====================================================================== -->
+	<build>
+		<resources>
+			<!-- define the resources that will go into the package -->
+			<resource>
+				<directory>${basedir}/jcr_root</directory>
+				<excludes>
+					<!-- exclude .vlt control files in the package -->
+					<exclude>**/.vlt</exclude>
+					<exclude>**/.vltignore</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<plugins>
+			<!-- we don't want the remote resources copied to target/classes (attached) 
+				this would add them below the jcr_root, too. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-remote-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>process</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/vault-work</outputDirectory>
+							<attached>false</attached>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- vault plugin -->
+			<plugin>
+				<groupId>com.day.jcr.vault</groupId>
+				<artifactId>content-package-maven-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<group>adobe/samplecode</group>
+					<name>dispatcher-flush-refetch-samplecode</name>
+					<properties>
+						<acHandling>merge_preserve</acHandling>
+					</properties>
+					<requiresRoot>true</requiresRoot>
+					<filter>
+						<root>/apps/replication</root>
+						<mode>merge</mode>
+						<includes>
+							<include>/apps/replication/install/</include>
+						</includes>
+					</filter>
+					<targetURL>${quickstart.url}/crx/packmgr/service.jsp</targetURL>
+					<embeddeds>
+						<embedded>
+							<groupId>com.adobe.cqsupport</groupId>
+							<artifactId>refetch-dispatcher</artifactId>
+							<target>/apps/replication/install</target>
+						</embedded>
+					</embeddeds>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<!-- ====================================================================== -->
+	<!-- D E P E N D E N C I E S -->
+	<!-- ====================================================================== -->
+	<dependencies>
+		<!-- embedded -->
+		<dependency>
+			<groupId>com.adobe.cqsupport</groupId>
+			<artifactId>refetch-dispatcher</artifactId>
+			<version>1.2-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
+</project>
