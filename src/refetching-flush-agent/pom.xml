@@ -1,40 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.adobe.cqsupport</groupId>
-    <artifactId>webinar-dispatchercache</artifactId>
-    <version>1-SNAPSHOT</version>
-    <packaging>pom</packaging>
+	<groupId>com.adobe.cqsupport</groupId>
+	<artifactId>reactor</artifactId>
+	<version>1.2-SNAPSHOT</version>
+	<packaging>pom</packaging>
 
-    <name>Webinar Dispatcher Cache / Refetch-Flush Agent builder</name>
-    <description>Build the bundle and content package</description>
+	<name>Refetch Dispatcher Main</name>
+	<description>Build the bundle and content package</description>
+	<url>https://github.com/cqsupport/webinar-dispatchercache</url>
+	<issueManagement>
+		<url>https://github.com/cqsupport/webinar-dispatchercache/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>2.4</version>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.7</version>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+	<scm>
+		<url>https://github.com/cqsupport/webinar-dispatchercache</url>
+		<connection>scm:git:git://github.com/cqsupport/webinar-dispatchercache.git</connection>
+		<developerConnection>scm:git:git@github.com:cqsupport/webinar-dispatchercache.git</developerConnection>
+	</scm>
 
-    <modules>
-        <module>refetch-bundle</module>
-        <module>refetch-content</module>
-    </modules>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<modules>
+		<module>refetch-bundle</module>
+		<module>refetch-content</module>
+	</modules>
 </project>
