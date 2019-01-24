@@ -116,7 +116,7 @@ public class DispatcherFlushContentBuilder implements ContentBuilder {
 						 * com.adobe.granite.replication.core class
 						 * com.day.cq.replication.impl.AliasesPreprocessor.
 						 */
-						if (pm != null) {
+						/*if (pm != null) {
 							// Check if the link is a page and if it has any vanityPath,
 							// and use the mapping url
 							// in case any aliases are used or any /etc/mapping
@@ -133,7 +133,7 @@ public class DispatcherFlushContentBuilder implements ContentBuilder {
 									urisList.add(mapped + ".html");
 								}
 							}
-						}
+						}*/
 
 						String[] uris = urisList.toArray(new String[urisList.size()]);
 						return create(factory, uris);
