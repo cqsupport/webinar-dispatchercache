@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.adobe.cqsupport</groupId>
@@ -21,7 +23,34 @@
 		<developerConnection>scm:git:git@github.com:cqsupport/webinar-dispatchercache.git</developerConnection>
 	</scm>
 
+	<properties>
+		<aem.host>localhost</aem.host>
+		<aem.port>4502</aem.port>
+		<aem.publish.host>localhost</aem.publish.host>
+		<aem.publish.port>4503</aem.publish.port>
+		<vault.user>admin</vault.user>
+		<vault.password>admin</vault.password>
+
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>com.day.jcr.vault</groupId>
+					<artifactId>content-package-maven-plugin</artifactId>
+					<version>0.5.1</version>
+					<configuration>
+						<targetURL>http://${aem.host}:${aem.port}/crx/packmgr/service.jsp</targetURL>
+						<failOnError>true</failOnError>
+						<failOnMissingEmbed>true</failOnMissingEmbed>
+						<userId>${vault.user}</userId>
+						<password>${vault.password}</password>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

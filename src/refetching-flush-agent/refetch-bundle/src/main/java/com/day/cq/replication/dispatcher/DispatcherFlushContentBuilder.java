@@ -84,96 +84,100 @@ public class DispatcherFlushContentBuilder implements ContentBuilder {
 			if (rr != null) {
 				pm = rr.adaptTo(PageManager.class);
 			}
+
+			/*
+			 * In this simple example we check whether the page activated has no extension
+			 * (e.g. /content/geometrixx/en/services) and add this page plus html extension
+			 * to the list of URIs to re-fetch
+			 */
+
+			String path = action.getPath();
+			if (path != null) {
+				int pathSep = path.lastIndexOf('/');
+				if (pathSep != -1) {
+					int extSep = path.indexOf('.', pathSep);
+					if (extSep == -1) {
+						ArrayList<String> urisList = new ArrayList<String>();
+
+						// For extension-less URLs under /content, we automatically re-fetch
+						// {path}.html.
+						// We restrict it to /content as re-fetching {path}.html may not be desirable
+						// for all extension-less URLs.
+						// For example, /bin/custom-servlet
+						if (path.startsWith("/content")) {
+							urisList.add(path + ".html");
+						}
+
+						// TODO: Add any additional re-fetch URLs for extension-less paths here.
+
+						/*
+						 * Commented out as sling:vanityPath and sling:alias are now handled by separate
+						 * flush requests in recent versions of AEM. See bundle
+						 * com.adobe.granite.replication.core class
+						 * com.day.cq.replication.impl.AliasesPreprocessor.
+						 */
+						if (pm != null) {
+							// Check if the link is a page and if it has any vanityPath,
+							// and use the mapping url
+							// in case any aliases are used or any /etc/mapping
+							Page flushedPage = pm.getPage(path);
+							if (flushedPage != null) {
+								// try to find if that page has also some alias or vanity url
+								ValueMap props = flushedPage.getProperties();
+								String vanityPath = props.get("sling:vanityPath", "");
+								if (vanityPath.length() > 0) {
+									urisList.add(vanityPath);
+								}
+								String mapped = rr.map(path);
+								if (!path.equals(mapped)) {
+									urisList.add(mapped + ".html");
+								}
+							}
+						}
+
+						String[] uris = urisList.toArray(new String[urisList.size()]);
+						return create(factory, uris);
+					} else {
+						Resource res = rr.getResource(path);
+						try {
+							Node node = (Node) res.adaptTo(Node.class);
+							if (NT_DAM_ASSET.equals(node.getPrimaryNodeType().getName())) {
+
+								// TODO: Re-fetch dam:Asset rendition URLs here.
+								// Add paths here instead of returning VOID
+								// For example:
+								if (path.endsWith(".mov")) {
+									String[] uris = new String[] { path + "/renditions/mobile.mov",
+											path + "/renditions/desktop.mov" };
+									return create(factory, uris);
+								}
+
+								return ReplicationContent.VOID;
+							} else {
+								// TODO: Review and customize re-fetch URLs.
+								/*
+								 * The code below applies when the file has a file extension, but is not a
+								 * dam:Asset. For example, an nt:file. In this case we re-fetch the path.
+								 * Customize this as needed, this may not be desirable for some file extensions.
+								 */
+								String[] uris = new String[] { path };
+								return create(factory, uris);
+							}
+						} catch (RepositoryException e) {
+							return ReplicationContent.VOID;
+						}
+					}
+
+				}
+			}
 		} catch (LoginException e) {
 			logger.error(e.getMessage(), e);
-		}
-
-		/*
-		 * In this simple example we check whether the page activated has no extension
-		 * (e.g. /content/geometrixx/en/services) and add this page plus html extension
-		 * to the list of URIs to re-fetch
-		 */
-
-		String path = action.getPath();
-		if (path != null) {
-			int pathSep = path.lastIndexOf('/');
-			if (pathSep != -1) {
-				int extSep = path.indexOf('.', pathSep);
-				if (extSep == -1) {
-					ArrayList<String> urisList = new ArrayList<String>();
-
-					// For extension-less URLs under /content, we automatically re-fetch
-					// {path}.html.
-					// We restrict it to /content as re-fetching {path}.html may not be desirable
-					// for all extension-less URLs.
-					// For example, /bin/custom-servlet
-					if (path.startsWith("/content")) {
-						urisList.add(path + ".html");
-					}
-
-					// TODO: Add any additional re-fetch URLs for extension-less paths here.
-
-					/*
-					 * Commented out as sling:vanityPath and sling:alias are now handled by separate
-					 * flush requests in recent versions of AEM. See bundle
-					 * com.adobe.granite.replication.core class
-					 * com.day.cq.replication.impl.AliasesPreprocessor.
-					 */
-					/*if (pm != null) {
-						// Check if the link is a page and if it has any vanityPath, 
-						// and use the mapping url
-						// in case any aliases are used or any /etc/mapping
-						Page flushedPage = pm.getPage(path);
-						if (flushedPage != null) {
-							// try to find if that page has also some alias or vanity url
-							ValueMap props = flushedPage.getProperties();
-							String vanityPath = props.get("sling:vanityPath", "");
-							if (vanityPath.length() > 0) {
-								urisList.add(vanityPath);
-							}
-							String mapped = rr.map(path);
-							if (!path.equals(mapped)) {
-								urisList.add(mapped + ".html");
-							}
-						}
-					}*/
-
-					String[] uris = urisList.toArray(new String[urisList.size()]);
-					return create(factory, uris);
-				} else {
-					Resource res = rr.getResource(path);
-					try {
-						Node node = (Node) res.adaptTo(Node.class);
-						if (NT_DAM_ASSET.equals(node.getPrimaryNodeType().getName())) {
-
-							// TODO: Re-fetch dam:Asset rendition URLs here.
-							// Add paths here instead of returning VOID
-							// For example:
-							/*if (path.endsWith(".mov")) {
-								String[] uris = new String[] { path + "/renditions/mobile.mov",
-										path + "/renditions/desktop.mov" };
-								return create(factory, uris);
-							}*/
-
-							return ReplicationContent.VOID;
-						} else {
-							// TODO: Review and customize re-fetch URLs.
-							/*
-							 * The code below applies when the file has a file extension, but is not a
-							 * dam:Asset. For example, an nt:file. In this case we re-fetch the path.
-							 * Customize this as needed, this may not be desirable for some file extensions.
-							 */
-							String[] uris = new String[] { path };
-							return create(factory, uris);
-						}
-					} catch (RepositoryException e) {
-						return ReplicationContent.VOID;
-					}
-				}
-
-			}
+		} finally {
+			if (rr != null)
+				rr.close();
 		}
 		return ReplicationContent.VOID;
+
 	}
 
 	/**
