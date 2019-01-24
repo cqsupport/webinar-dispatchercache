@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
 import org.apache.commons.io.IOUtils;
@@ -30,6 +32,7 @@ import org.apache.felix.scr.annotations.Property;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
 import org.apache.sling.api.resource.LoginException;
+import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceResolverFactory;
 import org.apache.sling.api.resource.ValueMap;
@@ -53,7 +56,7 @@ import com.day.cq.wcm.api.PageManager;
 @Service(ContentBuilder.class)
 @Property(name="name",value="dispatcher")
 public class DispatcherFlushContentBuilder implements ContentBuilder {
-
+	
 	@Reference
 	private ResourceResolverFactory rrFactory;
 	
@@ -62,6 +65,8 @@ public class DispatcherFlushContentBuilder implements ContentBuilder {
     public static final String NAME = "dispatcher";
 
     public static final String TITLE = "Re-fetch Dispatcher Flush";
+
+	private static final String NT_DAM_ASSET = "dam:Asset";
 
     /**
      * {@inheritDoc}
@@ -96,10 +101,16 @@ public class DispatcherFlushContentBuilder implements ContentBuilder {
                 if (extSep == -1) {
                 	ArrayList<String> urisList = new ArrayList<String>();
                 	urisList.add(path + ".html");
-                	if (pm != null) {
-                		/* Check if the link is a page and if it has any vanityPath, and use the mapping url
-                		 * in case any aliases are used or any /etc/mapping
-                		 */
+                	
+                	// TODO: Add any additional URLs here.
+
+                	/*  Commented out as sling:vanityPath and sling:alias are now handled by separate flush
+                	 * requests in recent versions of AEM.  See bundle com.adobe.granite.replication.core
+                	 * class com.day.cq.replication.impl.AliasesPreprocessor.
+   						if (pm != null) {
+                		// Check if the link is a page and if it has any vanityPath, and use the mapping url
+                		// in case any aliases are used or any /etc/mapping
+                		//
                     	Page flushedPage = pm.getPage(path);
                     	if (flushedPage != null) {
                     		// try to find if that page has also some alias or vanity url
@@ -113,12 +124,43 @@ public class DispatcherFlushContentBuilder implements ContentBuilder {
                             	urisList.add(mapped + ".html");
                         	}
                     	}
-                	}
+                	}*/
                     String[] uris = urisList.toArray(new String[urisList.size()]);
                     return create(factory, uris);
-                } else {    
-                    String[] uris = new String[] { path };
-                    return create(factory, uris);
+                } else {
+                	Resource res = rr.getResource(path);
+                	try {
+                		Node node = (Node)res.adaptTo(Node.class);
+						if( NT_DAM_ASSET.equals(node.getPrimaryNodeType().getName()) ) {
+							
+							// TODO: If you want to refetch certain asset renditions
+							// then add paths here instead of returning VOID
+							// For example:
+							/* 
+							 if( path.endsWith(".mov") ) {
+							 	String[] uris = new String[] {
+							 		path + "/renditions/mobile.mov",
+							 		path + "/renditions/desktop.mov"
+							 	};
+		                     	return create(factory, uris);
+		                     }
+		                    */
+							
+							return ReplicationContent.VOID;					
+						} else {
+							/* 
+							 * The code below applies when the file has a file extension,
+							 * but is not a dam:Asset.
+							 * For example, an nt:file. In this case we re-fetch the path.
+							 * Customize this as needed, this may not be desirable for
+							 * some file extensions.
+							 */
+		                    String[] uris = new String[] { path };
+		                    return create(factory, uris);
+						}
+					} catch (RepositoryException e) {
+						return ReplicationContent.VOID;
+					}
                 }
 
             }
