@@ -146,11 +146,11 @@ public class DispatcherFlushContentBuilder implements ContentBuilder {
 								// TODO: Re-fetch dam:Asset rendition URLs here.
 								// Add paths here instead of returning VOID
 								// For example:
-								if (path.endsWith(".mov")) {
+								/* if (path.endsWith(".mov")) {
 									String[] uris = new String[] { path + "/renditions/mobile.mov",
 											path + "/renditions/desktop.mov" };
 									return create(factory, uris);
-								}
+								}*/
 
 								return ReplicationContent.VOID;
 							} else {
